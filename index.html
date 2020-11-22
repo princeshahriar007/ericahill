@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>W3.CSS Template</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <script src="https://js.stripe.com/v3"></script>
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      background-color: #9e1f63;
+    }
+    .mySlides {
+      display: none;
+    }
+    .txt-color {
+      color: #f7d287;
+    }
+  </style>
+  <body>
+    <!-- Page content -->
+    <div class="w3-content" style="max-width: 2000px; margin-top: 46px">
+      <!-- The Band Section -->
+      <div
+        class="w3-container w3-content w3-center w3-padding-64"
+        style="max-width: 800px"
+        id="band"
+      >
+        <img src="logo.png" height="300" width="300" alt="Erica Hill" />
+        <h1 class="w3-wide" style="color: #f7d287">Proceed to Checkout</h1>
+        <button
+          style="
+            background-color: #f7d287;
+            color: #ec008c;
+            padding: 18px 22px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 1em;
+          "
+          id="checkout-button-price_1HodPMEJ2kP3FqmzyJYZtljc"
+          role="link"
+          type="button"
+        >
+          Checkout
+        </button>
+
+        <div id="error-message"></div>
+        <p style="color: #f7d287">COPYRIGHT © 2020</p>
+        <p style="color: #f7d287">ALL RIGHTS RESERVED</p>
+      </div>
+
+      <!-- End Page Content -->
+    </div>
+    <script>
+      (function () {
+        var stripe = window.Stripe("pk_live_qUSO82RbBAOPuQvBToFO6IR7");
+
+        var checkoutButton = document.getElementById(
+          "checkout-button-price_1HodPMEJ2kP3FqmzyJYZtljc"
+        );
+        checkoutButton.addEventListener("click", function () {
+          // When the customer clicks on the button, redirect
+          // them to Checkout.
+          stripe
+            .redirectToCheckout({
+              lineItems: [
+                { price: "price_1HodPMEJ2kP3FqmzyJYZtljc", quantity: 1 },
+              ],
+              mode: "subscription",
+              // Do not rely on the redirect to the successUrl for fulfilling
+              // purchases, customers may not always reach the success_url after
+              // a successful payment.
+              // Instead use one of the strategies described in
+              // https://stripe.com/docs/payments/checkout/fulfill-orders
+              successUrl:
+                "https://moneyresetmasterclass.gr8.com/thank_you.html",
+              cancelUrl:
+                "https://moneyresetmasterclass.gr8.com/offer_page.html",
+            })
+            .then(function (result) {
+              if (result.error) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, display the localized error message to your customer.
+                var displayError = document.getElementById("error-message");
+                displayError.textContent = result.error.message;
+              }
+            });
+        });
+      })();
+    </script>
+
+    <!-- Image of location/map -->
+
+    <!-- Footer -->
+  </body>
+</html>
